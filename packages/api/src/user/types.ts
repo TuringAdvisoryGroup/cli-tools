@@ -75,3 +75,9 @@ export interface GetMeResponseData {
 export interface HasBalanceResponseData {
   hasbalance: boolean
 }
+
+export interface PlatformUserResponseData {
+  userID: string
+  platformAccountID: string
+  platformAccountType: string
+}

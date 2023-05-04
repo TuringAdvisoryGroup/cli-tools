@@ -9,6 +9,7 @@ import {
   GetUserResponseData,
   GetUserTokenBalanceArgs,
   Response,
+  PlatformUserResponseData,
 } from './types'
 
 export const getMe = (client: Client) => {
@@ -62,5 +63,20 @@ export const getUser = async ({ userId }: GetUserArgs, client: Client) => {
     method: 'GET',
     authorization: true,
   })
+  return response.data
+}
+
+export const createPlatformUser = async (
+  platformAccountType: string,
+  platformAccountID: string,
+  client: Client,
+) => {
+  const response = await client.call<Response<PlatformUserResponseData>>({
+    url: `/v1/platformUsers`,
+    method: 'post',
+    body: { platformAccountType, platformAccountID },
+    authorization: true,
+  })
+
   return response.data
 }

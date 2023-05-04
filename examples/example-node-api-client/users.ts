@@ -112,3 +112,36 @@ export const getUser = async () => {
     console.error(error)
   }
 }
+
+export const createPlatformUser = async () => {
+  try {
+    const clientAuth = await generateApiClient()
+    const answers = await inquirer.prompt([
+      {
+        type: 'input',
+        name: 'platformAccountType',
+        message: 'Platform Account Type',
+      },
+      {
+        type: 'input',
+        name: 'platformAccountID',
+        message: 'Platform Account ID',
+      },
+    ])
+
+    const resp = await user.createPlatformUser(
+      answers.platformAccountType,
+      answers.platformAccountID,
+      clientAuth,
+    )
+
+    printTable([
+      {
+        id: resp.userID,
+        platformAccountID: resp.platformAccountID,
+      },
+    ])
+  } catch (err) {
+    console.error(err)
+  }
+}
