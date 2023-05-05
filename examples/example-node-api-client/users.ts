@@ -119,28 +119,23 @@ export const createPlatformUser = async () => {
     const answers = await inquirer.prompt([
       {
         type: 'input',
-        name: 'platformAccountType',
-        message: 'Platform Account Type',
+        name: 'userType',
+        message: 'User Type (discord, telegram)',
       },
       {
         type: 'input',
-        name: 'platformAccountID',
-        message: 'Platform Account ID',
+        name: 'externalUserID',
+        message: 'User ID from the external platform',
       },
     ])
 
     const resp = await user.createPlatformUser(
-      answers.platformAccountType,
-      answers.platformAccountID,
+      answers.userType,
+      answers.externalUserID,
       clientAuth,
     )
 
-    printTable([
-      {
-        id: resp.userID,
-        platformAccountID: resp.platformAccountID,
-      },
-    ])
+    printTable([resp])
   } catch (err) {
     console.error(err)
   }
