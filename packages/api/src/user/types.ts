@@ -78,7 +78,7 @@ export interface HasBalanceResponseData {
 
 export interface ExternalUserArgs {
   userType: string
-  externalUserID: string
+  externalUserId: string
 }
 export interface ExternalUserResponseData {
   userID: string
