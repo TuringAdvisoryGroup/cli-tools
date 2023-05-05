@@ -1,34 +1,13 @@
 import Client from '@tryrolljs/api-client'
 import {
-  InternalSendArgs,
-  TransactionResponseData,
   SendArgs,
+  TransactionResponseData,
   GetTransactionByIdArgs,
 } from './types'
 
 export const send = (
   client: Client,
-  { fromUserId, toUsername, amount, symbol, message }: SendArgs,
-) => {
-  const body = {
-    amount,
-    toUser: toUsername,
-    message,
-    type: 'transfer',
-    symbol,
-    fromUser: fromUserId,
-  }
-  return client.call({
-    url: '/v3/transactions',
-    method: 'POST',
-    authorization: true,
-    body,
-  })
-}
-
-export const internalSend = (
-  client: Client,
-  { amount, note, toUserId, tokenId }: InternalSendArgs,
+  { amount, note, toUserId, tokenId }: SendArgs,
 ) => {
   const body = {
     amount,
@@ -37,7 +16,7 @@ export const internalSend = (
     tokenID: tokenId,
   }
   return client.call<TransactionResponseData>({
-    url: '/v2/transactions/send',
+    url: '/v1/transactions/send',
     method: 'POST',
     authorization: true,
     body,
@@ -49,7 +28,7 @@ export const getTransactionById = (
   { transactionId }: GetTransactionByIdArgs,
 ) => {
   return client.call<TransactionResponseData>({
-    url: `/v3/transactions/${transactionId}`,
+    url: `/v1/transactions/${transactionId}`,
     method: 'GET',
     authorization: true,
   })

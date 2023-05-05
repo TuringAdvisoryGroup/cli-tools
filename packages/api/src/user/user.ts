@@ -14,8 +14,8 @@ import {
 } from './types'
 
 export const getMe = (client: Client) => {
-  return client.call<GetMeResponseData>({
-    url: '/v4/users/session',
+  return client.call<Response<GetMeResponseData>>({
+    url: '/v1/users/session',
     method: 'GET',
     authorization: true,
   })
@@ -26,7 +26,7 @@ export const hasBalance = async (
   { userId, tokenId, amount }: HasBalanceArgs,
 ) => {
   const response = await client.call<Response<HasBalanceResponseData>>({
-    url: `/v2/users/${userId}/hasbalance/${tokenId}/${amount}`,
+    url: `/v1/users/${userId}/hasbalance/${tokenId}/${amount}`,
     method: 'GET',
     authorization: true,
   })
@@ -38,7 +38,7 @@ export const getUserBalances = async (
   { userId }: GetUserBalancesArgs,
 ) => {
   const response = await client.call<Response<GetUserBalancesResponseData[]>>({
-    url: `/v2/users/${userId}/balances`,
+    url: `/v1/users/${userId}/balances`,
     method: 'GET',
     authorization: true,
   })
@@ -51,7 +51,7 @@ export const getUserTokenBalance = async (
   { userId, tokenId }: GetUserTokenBalanceArgs,
 ) => {
   const response = await client.call<Response<GetUserBalancesResponseData>>({
-    url: `/v2/users/${userId}/balances/${tokenId}`,
+    url: `/v1/users/${userId}/balances/${tokenId}`,
     method: 'GET',
     authorization: true,
   })
@@ -60,7 +60,7 @@ export const getUserTokenBalance = async (
 
 export const getUser = async (client: Client, { userId }: GetUserArgs) => {
   const response = await client.call<Response<GetUserResponseData>>({
-    url: `/v2/users/${userId}`,
+    url: `/v1/users/${userId}`,
     method: 'GET',
     authorization: true,
   })

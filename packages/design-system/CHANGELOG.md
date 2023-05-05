@@ -1,5 +1,32 @@
 # @tryrolljs/design-system
 
+## 1.3.2
+
+### Patch Changes
+
+- [#238](https://github.com/TuringAdvisoryGroup/tryrolljs/pull/238) [`1755a5b`](https://github.com/TuringAdvisoryGroup/tryrolljs/commit/1755a5b01e1b0949bf5119408340b8a5bc676def) Thanks [@teimurjan](https://github.com/teimurjan)! - Add layout to export
+
+## 1.3.1
+
+### Patch Changes
+
+- [#236](https://github.com/TuringAdvisoryGroup/tryrolljs/pull/236) [`e00c094`](https://github.com/TuringAdvisoryGroup/tryrolljs/commit/e00c094cf53982905a132dc99f5e08141a126039) Thanks [@teimurjan](https://github.com/teimurjan)! - Allow popover to open not only on keyboard focus, but also on click
+
+## 1.3.0
+
+### Minor Changes
+
+- [#233](https://github.com/TuringAdvisoryGroup/tryrolljs/pull/233) [`b48921f`](https://github.com/TuringAdvisoryGroup/tryrolljs/commit/b48921f99220726c74c07e647c2dc10f9a24e68d) Thanks [@teimurjan](https://github.com/teimurjan)! - - Added Layout component
+  - Added RightSidebar component
+  - Now Layout should be used instead of Sidebar
+  - Fixed typo in walletConnectProjectId prop (wallect)
+
+### Patch Changes
+
+- [#232](https://github.com/TuringAdvisoryGroup/tryrolljs/pull/232) [`a68087d`](https://github.com/TuringAdvisoryGroup/tryrolljs/commit/a68087d83e78456f371e2a8ec1dd5af84baf74a6) Thanks [@teimurjan](https://github.com/teimurjan)! - Add style prop to button
+
+- [#235](https://github.com/TuringAdvisoryGroup/tryrolljs/pull/235) [`e44b9a8`](https://github.com/TuringAdvisoryGroup/tryrolljs/commit/e44b9a83fa8086f5827535eb86c7b15fb9af41f9) Thanks [@teimurjan](https://github.com/teimurjan)! - Update floating ui lib
+
 ## 1.2.1
 
 ### Patch Changes
