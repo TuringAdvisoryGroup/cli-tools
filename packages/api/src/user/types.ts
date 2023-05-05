@@ -79,5 +79,5 @@ export interface HasBalanceResponseData {
 export interface PlatformUserResponseData {
   userID: string
   platformAccountID: string
-  platformAccountType: string
+  userType: string
 }

@@ -67,14 +67,14 @@ export const getUser = async ({ userId }: GetUserArgs, client: Client) => {
 }
 
 export const createPlatformUser = async (
-  platformAccountType: string,
-  platformAccountID: string,
+  userType: string,
+  externalUserID: string,
   client: Client,
 ) => {
   const response = await client.call<Response<PlatformUserResponseData>>({
     url: `/v1/platformUsers`,
     method: 'post',
-    body: { platformAccountType, platformAccountID },
+    body: { userType, externalUserID },
     authorization: true,
   })
 
