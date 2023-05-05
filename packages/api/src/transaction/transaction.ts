@@ -7,8 +7,8 @@ import {
 } from './types'
 
 export const send = (
-  { fromUserId, toUsername, amount, symbol, message }: SendArgs,
   client: Client,
+  { fromUserId, toUsername, amount, symbol, message }: SendArgs,
 ) => {
   const body = {
     amount,
@@ -27,8 +27,8 @@ export const send = (
 }
 
 export const internalSend = (
-  { amount, note, toUserId, tokenId }: InternalSendArgs,
   client: Client,
+  { amount, note, toUserId, tokenId }: InternalSendArgs,
 ) => {
   const body = {
     amount,
@@ -45,8 +45,8 @@ export const internalSend = (
 }
 
 export const getTransactionById = (
-  { transactionId }: GetTransactionByIdArgs,
   client: Client,
+  { transactionId }: GetTransactionByIdArgs,
 ) => {
   return client.call<TransactionResponseData>({
     url: `/v3/transactions/${transactionId}`,
