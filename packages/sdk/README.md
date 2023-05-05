@@ -56,7 +56,7 @@ npm i @tryrolljs/sdk @tryrolljs/api-client`
     )
 
     // invoke an api function while passing in the api client
-    const tokenList = await token.getTokens({ limit: 10, offset: 0}, apiClient)
+    const tokenList = await token.getTokens(apiClient, { limit: 10, offset: 0})
 
 
 ```
