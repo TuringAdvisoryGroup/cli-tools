@@ -108,8 +108,5 @@ export interface PlatformUserBalanceTokenResponseData {
 }
 
 export interface PlatformUserDepositAddressResponseData {
-  data: {
-    address: string
-  }
-  errors: any[]
+  address: string
 }

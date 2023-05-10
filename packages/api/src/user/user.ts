@@ -87,7 +87,7 @@ export const getPlatformUserDepositAddress = async (
   client: Client,
   { userType, externalUserId }: ExternalUserArgs,
 ) => {
-  const response = await client.call<Response<PlatformUserDepositAddressResponseData[]>>({
+  const response = await client.call<Response<PlatformUserDepositAddressResponseData>>({
     url: `/v1/platforms/${userType}/users/${externalUserId}/address`,
     method: 'get',
     authorization: true,

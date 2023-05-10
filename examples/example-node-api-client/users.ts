@@ -195,12 +195,12 @@ export const getPlatformUserDepositAddress = async () => {
       },
     ])
 
-    const resp = await user.getPlatformUserDepositAddress(clientAuth, {
+    const platformDepositAddress = await user.getPlatformUserDepositAddress(clientAuth, {
       userType: answers.userType,
       externalUserId: answers.externalUserId,
     })
 
-    printTable([resp])
+    printTable([platformDepositAddress])
   } catch (err) {
     console.error(err)
   }
