@@ -7,6 +7,8 @@ import {
   getUserTokenBalance,
   hasBalance,
   createPlatformUser,
+  getPlatformUserTokenBalance,
+  getPlatformUserDepositAddress,
 } from './users.js'
 
 async function main() {
@@ -24,6 +26,8 @@ async function main() {
           'Get user token balance',
           'Check user has token balance',
           'Create platform user',
+          'Get Platform User Token Balance',
+          'Get Platform User Deposit Address',
         ],
       },
     ])
@@ -49,6 +53,13 @@ async function main() {
           break
         case 'Create platform user':
           await createPlatformUser()
+          break
+        case 'Get Platform User Token Balance':
+          await getPlatformUserTokenBalance()
+          break
+        case 'Get Platform User Deposit Address':
+          await getPlatformUserDepositAddress()
+          break
       }
       promptOptionsAgain()
     })

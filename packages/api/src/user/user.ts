@@ -11,6 +11,9 @@ import {
   Response,
   ExternalUserResponseData,
   ExternalUserArgs,
+  PlatformUserDepositAddressResponseData,
+  PlatformUserArgs,
+  PlatformUserBalanceTokenResponseData,
 } from './types'
 
 export const getMe = (client: Client) => {
@@ -75,6 +78,31 @@ export const createPlatformUser = async (
     url: `/v1/externalUsers`,
     method: 'post',
     body: { userType, externalUserID: externalUserId },
+    authorization: true,
+  })
+  return response.data
+}
+
+export const getPlatformUserDepositAddress = async (
+  client: Client,
+  { userType, externalUserId }: ExternalUserArgs,
+) => {
+  const response = await client.call<Response<PlatformUserDepositAddressResponseData[]>>({
+    url: `/v1/platforms/${userType}/users/${externalUserId}/address`,
+    method: 'get',
+    authorization: true,
+  })
+
+  return response.data
+}
+
+export const getPlatformUserBalance = async (
+  client: Client,
+  { userType, tokenId, externalUserId }: PlatformUserArgs,
+) => {
+  const response = await client.call<Response<PlatformUserBalanceTokenResponseData[]>>({
+    url: `/v1/platforms/${userType}/users/${externalUserId}/balances/${tokenId}`,
+    method: 'get',
     authorization: true,
   })
 

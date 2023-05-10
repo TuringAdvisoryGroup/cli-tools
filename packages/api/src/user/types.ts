@@ -80,8 +80,36 @@ export interface ExternalUserArgs {
   userType: string
   externalUserId: string
 }
+
+export interface PlatformUserArgs {
+  userType: string
+  tokenId: string
+  externalUserId: string
+}
 export interface ExternalUserResponseData {
   userID: string
   externalUserID: string
   userType: string
+}
+
+
+export interface PlatformUserBalanceTokenResponseData {
+  token: {
+    uuid: string
+    symbol: string
+    name: string
+    decimals: number
+    logo: string
+    totalSupply: string
+    currentSupply: string
+    contractAddress: string
+  }
+  amount: string
+}
+
+export interface PlatformUserDepositAddressResponseData {
+  data: {
+    address: string
+  }
+  errors: any[]
 }

@@ -54,6 +54,7 @@ class SDK {
         refreshToken: this.token!.refresh_token!,
         code,
       })
+      console.log('response', response);
 
       await this.saveTokenFromResponse(response.data)
     } catch (e) {

@@ -139,3 +139,69 @@ export const createPlatformUser = async () => {
     console.error(err)
   }
 }
+
+export const getPlatformUserTokenBalance = async () => {
+  try {
+    const clientAuth = await generateApiClient()
+    const answers = await inquirer.prompt([
+      {
+        type: 'input',
+        name: 'userType',
+        message: 'User Type (discord, telegram)',
+      },
+      {
+        type: 'input',
+        name: 'externalUserId',
+        message: 'User ID from the external platform',
+      },
+      {
+        type: 'input',
+        name: 'tokenId',
+        message: 'Token ID',
+      },
+    ])
+
+    const platformUserBalances = await user.getPlatformUserBalance(clientAuth, answers)
+
+    printTable(
+      platformUserBalances?.map((balance) => ({
+        uuid: balance.token.uuid,
+        name: balance.token.name,
+        symbol: balance.token.symbol,
+        decimals: balance.token.decimals,
+        totalSupply: balance.token.totalSupply,
+        currentSupply: balance.token.currentSupply,
+        contractAddress: balance.token.contractAddress,
+        balance: balance.amount,
+      })))
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+export const getPlatformUserDepositAddress = async () => {
+  try {
+    const clientAuth = await generateApiClient()
+    const answers = await inquirer.prompt([
+      {
+        type: 'input',
+        name: 'userType',
+        message: 'User Type (discord, telegram)',
+      },
+      {
+        type: 'input',
+        name: 'externalUserId',
+        message: 'User ID from the external platform',
+      },
+    ])
+
+    const resp = await user.getPlatformUserDepositAddress(clientAuth, {
+      userType: answers.userType,
+      externalUserId: answers.externalUserId,
+    })
+
+    printTable([resp])
+  } catch (err) {
+    console.error(err)
+  }
+}
