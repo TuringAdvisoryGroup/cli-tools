@@ -89,7 +89,7 @@ export const getPlatformUserDepositAddress = async (
 ) => {
   const response = await client.call<Response<PlatformUserDepositAddressResponseData>>({
     url: `/v1/platforms/${userType}/users/${externalUserId}/address`,
-    method: 'get',
+    method: 'GET',
     authorization: true,
   })
 
@@ -102,7 +102,7 @@ export const getPlatformUserBalance = async (
 ) => {
   const response = await client.call<Response<PlatformUserBalanceTokenResponseData[]>>({
     url: `/v1/platforms/${userType}/users/${externalUserId}/balances/${tokenId}`,
-    method: 'get',
+    method: 'GET',
     authorization: true,
   })
 
