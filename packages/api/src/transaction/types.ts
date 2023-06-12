@@ -2,7 +2,7 @@ export interface SendArgs {
   toUserId: string
   tokenId: string
   amount: string
-  note: string
+  note?: string
 }
 
 export interface GetTransactionByIdArgs {
