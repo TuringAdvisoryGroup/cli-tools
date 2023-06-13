@@ -8,11 +8,8 @@ import {
   hasBalance,
   createPlatformUser,
   loginPlatformUser,
-  getPlatformUserDepositAddress,
-  getPlatformUserTokenBalance,
-  getPlatformUserTokenBalances,
 } from './users.js'
-import { getClient } from './client-credentials.js'
+import { generateClientSecret, getClient } from './client-credentials.js'
 import { sendFromPlatformUser } from './transaction.js'
 
 enum Choice {
@@ -26,9 +23,7 @@ enum Choice {
   LoginPlatformUser = 'Login platform user',
   GetClient = 'Get client',
   SendFromPlatformUser = 'Send From Platform User',
-  GetPlatformUserDepositAddress = 'Get platform user deposit address',
-  GetPlatformUserBalance = 'Get platform user balance',
-  GetPlatformUserBalances = 'Get platform user balances',
+  GenerateClientSecret = 'Generate client secret',
 }
 
 const actionByChoice: Record<Choice, Function> = {
@@ -42,9 +37,7 @@ const actionByChoice: Record<Choice, Function> = {
   [Choice.LoginPlatformUser]: loginPlatformUser,
   [Choice.GetClient]: getClient,
   [Choice.SendFromPlatformUser]: sendFromPlatformUser,
-  [Choice.GetPlatformUserDepositAddress]: getPlatformUserDepositAddress,
-  [Choice.GetPlatformUserBalances]: getPlatformUserTokenBalances,
-  [Choice.GetPlatformUserBalance]: getPlatformUserTokenBalance,
+  [Choice.GenerateClientSecret]: generateClientSecret,
 }
 
 async function main() {

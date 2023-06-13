@@ -76,7 +76,7 @@ export interface HasBalanceResponseData {
   hasbalance: boolean
 }
 
-export interface PlatformUserArgs {
+export interface CreateExternalUserArgs {
   userType: string
   platformUserId: string
 }
@@ -88,8 +88,4 @@ export interface CreateExternalUserResponseData {
 
 export interface GetUserMasqueradeTokenArgs {
   userId: string
-}
-
-export interface PlatformUserTokenBalancesArgs extends PlatformUserArgs {
-  tokenId: string
 }

@@ -10,9 +10,8 @@ import {
   GetUserTokenBalanceArgs,
   Response,
   CreateExternalUserResponseData,
-  PlatformUserArgs,
+  CreateExternalUserArgs,
   GetUserMasqueradeTokenArgs,
-  PlatformUserTokenBalancesArgs,
 } from './types'
 
 export const getMe = (client: Client) => {
@@ -71,7 +70,7 @@ export const getUser = async (client: Client, { userId }: GetUserArgs) => {
 
 export const createPlatformUser = async (
   client: Client,
-  { userType, platformUserId }: PlatformUserArgs,
+  { userType, platformUserId }: CreateExternalUserArgs,
 ) => {
   const response = await client.call<Response<CreateExternalUserResponseData>>({
     url: `/v1/platforms/${userType}/users/${platformUserId}`,
@@ -89,45 +88,6 @@ export const getUserMasqueradeToken = async (
 ) => {
   const response = await client.call<Response<{ token: string }>>({
     url: `/v1/users/${userId}/masquerade`,
-    method: 'GET',
-    authorization: true,
-  })
-
-  return response.data
-}
-
-export const getPlatformUserBalances = async (
-  client: Client,
-  { userType, platformUserId }: PlatformUserArgs,
-) => {
-  const response = await client.call<Response<{ token: string }>>({
-    url: `/v1/platforms/${userType}/users/${platformUserId}/balances`,
-    method: 'GET',
-    authorization: true,
-  })
-
-  return response.data
-}
-
-export const getPlatformUserBalance = async (
-  client: Client,
-  { userType, platformUserId, tokenId }: PlatformUserTokenBalancesArgs,
-) => {
-  const response = await client.call<Response<{ token: string }>>({
-    url: `/v1/platforms/${userType}/users/${platformUserId}/balances/${tokenId}`,
-    method: 'GET',
-    authorization: true,
-  })
-
-  return response.data
-}
-
-export const getPlatformUserDepositAddress = async (
-  client: Client,
-  { userType, platformUserId }: PlatformUserArgs,
-) => {
-  const response = await client.call<Response<{ address: string }>>({
-    url: `/v1/platforms/${userType}/users/${platformUserId}/address`,
     method: 'GET',
     authorization: true,
   })
