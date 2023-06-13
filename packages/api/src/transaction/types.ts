@@ -1,5 +1,9 @@
 export interface SendArgs {
-  toUserId: string
+  toUsername?: string
+  toUser?: {
+    userType: string
+    platformUserId: string
+  }
   tokenId: string
   amount: string
   note?: string
