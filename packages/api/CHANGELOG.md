@@ -1,5 +1,11 @@
 # @tryrolljs/api
 
+## 1.2.3
+
+### Patch Changes
+
+- [#307](https://github.com/TuringAdvisoryGroup/tryrolljs/pull/307) [`7113eaa`](https://github.com/TuringAdvisoryGroup/tryrolljs/commit/7113eaa358ed029d4c06ec0a5ba405e9a9129f39) Thanks [@marlon-wiprud](https://github.com/marlon-wiprud)! - Platform user balances
+
 ## 1.2.2
 
 ### Patch Changes
