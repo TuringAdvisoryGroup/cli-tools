@@ -98,6 +98,19 @@ export const getUserMasqueradeToken = async (
 
 export const getPlatformUserBalances = async (
   client: Client,
+  { userType, platformUserId }: PlatformUserArgs,
+) => {
+  const response = await client.call<Response<{ token: string }>>({
+    url: `/v1/platforms/${userType}/users/${platformUserId}/balances`,
+    method: 'GET',
+    authorization: true,
+  })
+
+  return response.data
+}
+
+export const getPlatformUserBalance = async (
+  client: Client,
   { userType, platformUserId, tokenId }: PlatformUserTokenBalancesArgs,
 ) => {
   const response = await client.call<Response<{ token: string }>>({
