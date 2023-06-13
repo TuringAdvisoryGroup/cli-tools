@@ -8,7 +8,7 @@ import config from './config.js'
 export const getUserBalances = async () => {
   try {
     const sdkPool = new SDKPool(config)
-    sdkPool.getSDK(InteractionType.ClientCredentials).generateToken()
+    await sdkPool.getSDK(InteractionType.ClientCredentials).generateToken()
     const clientPool = new ClientPool({ baseUrl: process.env.API_URL }, sdkPool)
     const answers = await inquirer.prompt([
       {
@@ -40,7 +40,7 @@ export const getUserBalances = async () => {
 export const getUserTokenBalance = async () => {
   try {
     const sdkPool = new SDKPool(config)
-    sdkPool.getSDK(InteractionType.ClientCredentials).generateToken()
+    await sdkPool.getSDK(InteractionType.ClientCredentials).generateToken()
     const clientPool = new ClientPool({ baseUrl: process.env.API_URL }, sdkPool)
     const answers = await inquirer.prompt([
       {
@@ -73,7 +73,7 @@ export const getUserTokenBalance = async () => {
 export const hasBalance = async () => {
   try {
     const sdkPool = new SDKPool(config)
-    sdkPool.getSDK(InteractionType.ClientCredentials).generateToken()
+    await sdkPool.getSDK(InteractionType.ClientCredentials).generateToken()
     const clientPool = new ClientPool({ baseUrl: process.env.API_URL }, sdkPool)
     const answers = await inquirer.prompt([
       {
@@ -109,7 +109,7 @@ export const hasBalance = async () => {
 export const getUser = async () => {
   try {
     const sdkPool = new SDKPool(config)
-    sdkPool.getSDK(InteractionType.ClientCredentials).generateToken()
+    await sdkPool.getSDK(InteractionType.ClientCredentials).generateToken()
     const clientPool = new ClientPool({ baseUrl: process.env.API_URL }, sdkPool)
     const answers = await inquirer.prompt([
       {
@@ -138,7 +138,7 @@ export const getUser = async () => {
 export const createPlatformUser = async () => {
   try {
     const sdkPool = new SDKPool(config)
-    sdkPool.getSDK(InteractionType.ClientCredentials).generateToken()
+    await sdkPool.getSDK(InteractionType.ClientCredentials).generateToken()
     const clientPool = new ClientPool({ baseUrl: process.env.API_URL }, sdkPool)
     const answers = await inquirer.prompt([
       {
@@ -170,7 +170,7 @@ export const createPlatformUser = async () => {
 export const loginPlatformUser = async () => {
   try {
     const sdkPool = new SDKPool(config)
-    sdkPool.getSDK(InteractionType.ClientCredentials).generateToken()
+    await sdkPool.getSDK(InteractionType.ClientCredentials).generateToken()
     const clientPool = new ClientPool({ baseUrl: process.env.API_URL }, sdkPool)
 
     const answers = await inquirer.prompt([

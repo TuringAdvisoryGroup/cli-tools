@@ -20,6 +20,8 @@ class CodeTokenInteraction implements TokenInteraction<string> {
   ) {
     this.storage = storage
     this.config = config
+
+    this.generateToken.bind(this)
   }
 
   public refreshToken = async (token: Token) => {
@@ -49,7 +51,7 @@ class CodeTokenInteraction implements TokenInteraction<string> {
     }
   }
 
-  public generateToken = async (code: string) => {
+  public async generateToken(code: string): Promise<Token> {
     const cachedCodeVerifier = await this.storage.getItem(
       StorageKey.CodeVerifier,
     )

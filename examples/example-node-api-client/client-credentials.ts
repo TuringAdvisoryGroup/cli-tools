@@ -8,7 +8,7 @@ import config from './config.js'
 export const getClient = async () => {
   try {
     const sdkPool = new SDKPool(config)
-    sdkPool.getSDK(InteractionType.ClientCredentials).generateToken()
+    await sdkPool.getSDK(InteractionType.Browser).generateToken()
     const clientPool = new ClientPool({ baseUrl: process.env.API_URL }, sdkPool)
 
     const answers = await inquirer.prompt([
@@ -20,7 +20,7 @@ export const getClient = async () => {
     ])
     const client = await clientCredentials.getClient(
       answers,
-      clientPool.getClient(InteractionType.ClientCredentials),
+      clientPool.getClient(InteractionType.Browser),
     )
 
     printTable([client])
@@ -32,11 +32,11 @@ export const getClient = async () => {
 export const getClients = async () => {
   try {
     const sdkPool = new SDKPool(config)
-    sdkPool.getSDK(InteractionType.ClientCredentials).generateToken()
+    await sdkPool.getSDK(InteractionType.Browser).generateToken()
     const clientPool = new ClientPool({ baseUrl: process.env.API_URL }, sdkPool)
 
     const clients = await clientCredentials.getClients(
-      clientPool.getClient(InteractionType.ClientCredentials),
+      clientPool.getClient(InteractionType.Browser),
     )
 
     printTable(clients)
@@ -48,9 +48,7 @@ export const getClients = async () => {
 export const generateClientSecret = async () => {
   try {
     const sdkPool = new SDKPool(config)
-
-    sdkPool.getSDK(InteractionType.ClientCredentials).generateToken()
-
+    await sdkPool.getSDK(InteractionType.Browser).generateToken()
     const clientPool = new ClientPool({ baseUrl: process.env.API_URL }, sdkPool)
 
     const answers = await inquirer.prompt([
@@ -63,7 +61,7 @@ export const generateClientSecret = async () => {
 
     const secret = await clientCredentials.generateClientSecret(
       answers,
-      clientPool.getClient(InteractionType.ClientCredentials),
+      clientPool.getClient(InteractionType.Browser),
     )
 
     printTable([secret])

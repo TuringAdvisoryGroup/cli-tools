@@ -1,4 +1,5 @@
 import AutoLoginTokenInteraction from './auto-login-token-interaction'
+import BrowserTokenInteraction from './browser-token-interaction'
 import ClientCredentialsTokenInteraction from './client-credentials-token-interaction'
 import CodeTokenInteraction from './code-token-interaction'
 import SDK from './sdk'
@@ -13,7 +14,7 @@ class SDKPool {
 
     const storages = this.makeStorages(storage ?? makeInMemoryStorage())
     const interactions = this.makeInteractions(storages)
-    this.sdks = this.makeTokenManagers(storages, interactions)
+    this.sdks = this.makeSdks(storages, interactions)
   }
 
   public getSDK = (type: InteractionType) => {
@@ -30,6 +31,10 @@ class SDKPool {
       [InteractionType.ClientCredentials]: addPrefixToStorage(
         storage,
         InteractionType.ClientCredentials,
+      ),
+      [InteractionType.Browser]: addPrefixToStorage(
+        storage,
+        InteractionType.Browser,
       ),
     }
   }
@@ -49,10 +54,14 @@ class SDKPool {
           this.config,
           storages[InteractionType.ClientCredentials],
         ),
+      [InteractionType.Browser]: new BrowserTokenInteraction(
+        this.config,
+        storages[InteractionType.Browser],
+      ),
     }
   }
 
-  private makeTokenManagers = (
+  private makeSdks = (
     storages: Record<InteractionType, Storage>,
     interactions: Record<InteractionType, TokenInteraction<any>>,
   ) => {
@@ -71,6 +80,11 @@ class SDKPool {
         this.config,
         storages[InteractionType.ClientCredentials],
         interactions[InteractionType.ClientCredentials],
+      ),
+      [InteractionType.Browser]: new SDK(
+        this.config,
+        storages[InteractionType.Browser],
+        interactions[InteractionType.Browser],
       ),
     }
   }

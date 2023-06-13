@@ -69,6 +69,7 @@ export enum InteractionType {
   Code = 'code',
   AutoLoginToken = 'autologintoken',
   ClientCredentials = 'clientcredentials',
+  Browser = 'browser',
 }
 
 export interface TokenInteraction<T> {
