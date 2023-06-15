@@ -35,3 +35,23 @@ export const getTransactionById = (
     authorization: true,
   })
 }
+
+export const batchSend = (
+  client: Client,
+  transactions: Array<SendArgs>,
+) => {
+  const body = transactions.map(({ amount, message, toUser, toUsername, tokenId }) => ({
+    amount,
+    message,
+    toUser,
+    toUsername,
+    tokenId,
+  }));
+
+  return client.call<TransactionResponseData>({
+    url: '/v1/transactions/batch',
+    method: 'POST',
+    authorization: true,
+    body,
+  });
+};
