@@ -81,3 +81,48 @@ export const sendFromPlatformUser = async () => {
     console.error(err)
   }
 }
+
+export const batchSendTransactions = async () => {
+  try {
+    const sdkPool = new SDKPool(config);
+    await sdkPool.getSDK(InteractionType.ClientCredentials).generateToken();
+    const clientPool = new ClientPool({ baseUrl: process.env.API_URL }, sdkPool);
+
+    const transactions = [
+      {
+        amount: '10',
+        toUsername: 'user1',
+        tokenId: 'token1',
+        note: 'Transaction 1',
+      },
+      {
+        amount: '5',
+        toUsername: 'user2',
+        tokenId: 'token2',
+        note: 'Transaction 2',
+      },
+    ];
+
+    const response = await transaction.batchSend(
+      clientPool.getClient(InteractionType.ClientCredentials),
+      transactions,
+    );
+
+    console.log('Batch send response:', response);
+
+    if (Array.isArray(response)) {
+      printTable(response.map((tx) => ({
+        from: tx.from.username,
+        to: tx.to.username,
+        token: tx.token.symbol,
+        amount: tx.amount,
+        status: tx.status,
+        type: tx.type,
+      })));
+    } else {
+      console.error('Invalid response:', response);
+    }
+  } catch (err) {
+    console.error(err);
+  }
+};
