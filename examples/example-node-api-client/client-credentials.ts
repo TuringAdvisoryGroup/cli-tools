@@ -14,9 +14,10 @@ const clientCredentialsConfig = {
   clientId: process.env.SERVER_BROWSER_INTERACTION_CLIENT_ID ?? '',
 }
 
+const sdkPool = new SDKPool(clientCredentialsConfig)
+
 export const getClient = async () => {
   try {
-    const sdkPool = new SDKPool(clientCredentialsConfig)
     await sdkPool.getSDK(InteractionType.ServerBrowser).generateToken()
     const clientPool = new ClientPool({ baseUrl: process.env.API_URL }, sdkPool)
 
@@ -40,7 +41,6 @@ export const getClient = async () => {
 
 export const getClients = async () => {
   try {
-    const sdkPool = new SDKPool(clientCredentialsConfig)
     await sdkPool.getSDK(InteractionType.ServerBrowser).generateToken()
     const clientPool = new ClientPool({ baseUrl: process.env.API_URL }, sdkPool)
 
@@ -56,7 +56,6 @@ export const getClients = async () => {
 
 export const generateClientSecret = async () => {
   try {
-    const sdkPool = new SDKPool(clientCredentialsConfig)
     await sdkPool.getSDK(InteractionType.ServerBrowser).generateToken()
     const clientPool = new ClientPool({ baseUrl: process.env.API_URL }, sdkPool)
 
