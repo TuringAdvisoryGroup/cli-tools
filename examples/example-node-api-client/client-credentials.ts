@@ -14,7 +14,7 @@ const config = { ...baseConfig, clientId: 'roll-app' }
 export const getClient = async () => {
   try {
     const sdkPool = new SDKPool(config)
-    await sdkPool.getSDK(InteractionType.Browser).generateToken()
+    await sdkPool.getSDK(InteractionType.ServerBrowser).generateToken()
     const clientPool = new ClientPool({ baseUrl: process.env.API_URL }, sdkPool)
 
     const answers = await inquirer.prompt([
@@ -26,7 +26,7 @@ export const getClient = async () => {
     ])
     const client = await clientCredentials.getClient(
       answers,
-      clientPool.getClient(InteractionType.Browser),
+      clientPool.getClient(InteractionType.ServerBrowser),
     )
 
     printTable([client])
@@ -38,11 +38,11 @@ export const getClient = async () => {
 export const getClients = async () => {
   try {
     const sdkPool = new SDKPool(config)
-    await sdkPool.getSDK(InteractionType.Browser).generateToken()
+    await sdkPool.getSDK(InteractionType.ServerBrowser).generateToken()
     const clientPool = new ClientPool({ baseUrl: process.env.API_URL }, sdkPool)
 
     const clients = await clientCredentials.getClients(
-      clientPool.getClient(InteractionType.Browser),
+      clientPool.getClient(InteractionType.ServerBrowser),
     )
 
     printTable(clients)
@@ -54,7 +54,7 @@ export const getClients = async () => {
 export const generateClientSecret = async () => {
   try {
     const sdkPool = new SDKPool(config)
-    await sdkPool.getSDK(InteractionType.Browser).generateToken()
+    await sdkPool.getSDK(InteractionType.ServerBrowser).generateToken()
     const clientPool = new ClientPool({ baseUrl: process.env.API_URL }, sdkPool)
 
     const answers = await inquirer.prompt([
@@ -67,7 +67,7 @@ export const generateClientSecret = async () => {
 
     const secret = await clientCredentials.generateClientSecret(
       answers,
-      clientPool.getClient(InteractionType.Browser),
+      clientPool.getClient(InteractionType.ServerBrowser),
     )
 
     printTable([secret])

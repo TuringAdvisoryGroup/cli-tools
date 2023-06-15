@@ -24,7 +24,7 @@ export const sendFromPlatformUser = async () => {
       },
       {
         type: 'input',
-        name: 'toUsername',
+        name: 'toUser',
         message: 'Roll User to send to',
       },
       {
@@ -62,7 +62,7 @@ export const sendFromPlatformUser = async () => {
       clientPool.getClient(InteractionType.AutoLoginToken),
       {
         amount: answers.amount,
-        toUserId: answers.toUserId,
+        toUser: answers.toUserId,
         tokenId: answers.tokenId,
         note: 'test transaction',
       },

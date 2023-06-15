@@ -1,15 +1,21 @@
 import AutoLoginTokenInteraction from './auto-login-token-interaction'
-import BrowserTokenInteraction from './browser-token-interaction'
+import ServerBrowserTokenInteraction from './server-browser-token-interaction'
 import ClientCredentialsTokenInteraction from './client-credentials-token-interaction'
 import CodeTokenInteraction from './code-token-interaction'
 import SDK from './sdk'
 import { Config, Storage, TokenInteraction, InteractionType } from './types'
-import { addPrefixToStorage, makeInMemoryStorage } from './utils'
+import {
+  addPrefixToStorage,
+  makeInMemoryStorage,
+  throwIfNotNode,
+} from './utils'
 
 class SDKPool {
   private readonly sdks: Record<InteractionType, SDK>
 
   constructor(private readonly config: Config, storage?: Storage) {
+    throwIfNotNode()
+
     this.config = config
 
     const storages = this.makeStorages(storage ?? makeInMemoryStorage())
@@ -32,9 +38,9 @@ class SDKPool {
         storage,
         InteractionType.ClientCredentials,
       ),
-      [InteractionType.Browser]: addPrefixToStorage(
+      [InteractionType.ServerBrowser]: addPrefixToStorage(
         storage,
-        InteractionType.Browser,
+        InteractionType.ServerBrowser,
       ),
     }
   }
@@ -54,9 +60,9 @@ class SDKPool {
           this.config,
           storages[InteractionType.ClientCredentials],
         ),
-      [InteractionType.Browser]: new BrowserTokenInteraction(
+      [InteractionType.ServerBrowser]: new ServerBrowserTokenInteraction(
         this.config,
-        storages[InteractionType.Browser],
+        storages[InteractionType.ServerBrowser],
       ),
     }
   }
@@ -81,10 +87,10 @@ class SDKPool {
         storages[InteractionType.ClientCredentials],
         interactions[InteractionType.ClientCredentials],
       ),
-      [InteractionType.Browser]: new SDK(
+      [InteractionType.ServerBrowser]: new SDK(
         this.config,
-        storages[InteractionType.Browser],
-        interactions[InteractionType.Browser],
+        storages[InteractionType.ServerBrowser],
+        interactions[InteractionType.ServerBrowser],
       ),
     }
   }

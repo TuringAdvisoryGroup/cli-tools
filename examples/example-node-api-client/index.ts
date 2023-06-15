@@ -88,6 +88,8 @@ function promptOptionsAgain() {
     .then((answers) => {
       if (answers.again) {
         main()
+      } else {
+        process.exit(0)
       }
     })
 }

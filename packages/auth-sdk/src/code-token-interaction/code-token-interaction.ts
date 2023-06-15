@@ -108,17 +108,22 @@ class CodeTokenInteraction implements TokenInteraction<string> {
     await Promise.all([
       this.storage.removeItem(StorageKey.Code),
       this.storage.removeItem(StorageKey.CodeVerifier),
+      this.storage.removeItem(StorageKey.State),
     ])
   }
 
   public getLogInUrl = async () => {
     const minVerifierLength = 43
+    const state = getRandomString()
     const codeVerifier = getRandomString(minVerifierLength)
     const codeChallenge = await pkceChallengeFromVerifier(codeVerifier)
 
-    await this.storage.setItem(StorageKey.CodeVerifier, codeVerifier)
+    await Promise.all([
+      this.storage.setItem(StorageKey.CodeVerifier, codeVerifier),
+      this.storage.setItem(StorageKey.State, state),
+    ])
 
-    return getLogInUrl({ ...this.config, codeChallenge })
+    return getLogInUrl({ ...this.config, state, codeChallenge })
   }
 
   public getLogOutUrl = async (token: Token) => {
