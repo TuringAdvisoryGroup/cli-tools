@@ -1,4 +1,4 @@
-# `@roll-network/auth-sdk`
+# @roll-network/auth-sdk
 
 `@roll-network/auth-sdk` is a library that provides functionalities for handling token interactions in Node.js and Browser environments, making it easier for developers to perform OAuth operations. The SDK provides various types of interactions based on the context, with each type corresponding to a specific OAuth flow. 
 
@@ -93,7 +93,6 @@ const autoLoginSdk = sdkPool.getSDK(InteractionType.AutoLoginToken);
 ```
 
 Then, you can use these SDKs to interact with the OAuth server, just like in the `SDK` example above.
-```
 
 ## Important Notes
 

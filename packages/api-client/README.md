@@ -1,4 +1,4 @@
-# `@roll-network/api-client` 
+# @roll-network/api-client
 
 The `@roll-network/api-client` is a JavaScript package that offers an easy and efficient way to interact with the Roll Network's API services. It provides a convenient and maintainable method to make HTTP requests and manage API tokens. 
 
@@ -116,9 +116,3 @@ client.on(Event.Unauthorized, (response) => {
 The library has custom errors which can be used for precise error handling:
 
 - `CouldntRefreshTokensError`: Thrown when the client fails to refresh the tokens.
-
-## Contributing
-
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
-
-Please make sure to update the tests as appropriate.
