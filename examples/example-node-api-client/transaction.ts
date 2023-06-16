@@ -47,7 +47,7 @@ export const sendFromPlatformUser = async () => {
       },
     )
 
-    const autoLoginToken = await user.getUserMasqueradeToken(
+    const masqueradeToken = await user.getUserMasqueradeToken(
       clientPool.getClient(InteractionType.ClientCredentials),
       {
         userId: userResp.userID,
@@ -55,11 +55,11 @@ export const sendFromPlatformUser = async () => {
     )
 
     await sdkPool
-      .getSDK(InteractionType.AutoLoginToken)
-      .generateToken(autoLoginToken.token)
+      .getSDK(InteractionType.MasqueradeToken)
+      .generateToken(masqueradeToken.token)
 
     const tx = await transaction.send(
-      clientPool.getClient(InteractionType.AutoLoginToken),
+      clientPool.getClient(InteractionType.MasqueradeToken),
       {
         amount: answers.amount,
         toUsername: answers.toUsername,

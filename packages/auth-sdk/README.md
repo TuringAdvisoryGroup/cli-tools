@@ -26,9 +26,7 @@ The interaction types include:
 
 - `ClientCredentials`: Implements the client credentials flow, suitable for server-to-server authentication where a client acts on its own behalf.
 
-- `AutoLoginToken`: Implements a flow that allows automatic login without user interaction.
-
-- `ServerBrowser`: Implements a flow that uses the user's browser to perform OAuth but with all logic executed server-side in a Node.js environment. This flow starts an express server, generates the login URL and opens it in a default browser. Once the authorization code is obtained, it is exchanged for tokens.
+- `Server`: Implements a flow that uses the user's browser to perform OAuth but with all logic executed server-side in a Node.js environment. This flow starts an express server, generates the login URL and opens it in a default browser. Once the authorization code is obtained, it is exchanged for tokens.
 
 Of course! Here's a more detailed example for the usage section:
 
@@ -89,12 +87,12 @@ After that, you can use `getSDK` method of the `SDKPool` to get an SDK for a spe
 
 ```javascript
 const codeSdk = sdkPool.getSDK(InteractionType.Code);
-const autoLoginSdk = sdkPool.getSDK(InteractionType.AutoLoginToken);
+const clientCredentialsSdk = sdkPool.getSDK(InteractionType.ClientCredentials);
 ```
 
 Then, you can use these SDKs to interact with the OAuth server, just like in the `SDK` example above.
 
 ## Important Notes
 
-- The library is primarily designed for use in Node.js environments but the `Code`, `ClientCredentials` & `AutoLoginToken` interactions can be used in a browser environment as well. 
-- The `ServerBrowser` interaction type uses Express server under the hood. 
+- The library is primarily designed for use in Node.js environments but the `Code`, `ClientCredentials` & `MasqueradeToken` interactions can be used in a browser environment as well. 
+- The `Server` interaction type uses Express server under the hood. 

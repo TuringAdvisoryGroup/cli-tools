@@ -11,7 +11,7 @@ enum Event {
   TokenGenerationFail = 'tokennotgenerated',
 }
 
-class ServerBrowserTokenInteraction
+class ServerTokenInteraction
   extends CodeTokenInteraction
   implements TokenInteraction<void>
 {
@@ -124,4 +124,4 @@ class ServerBrowserTokenInteraction
   }
 }
 
-export default ServerBrowserTokenInteraction
+export default ServerTokenInteraction

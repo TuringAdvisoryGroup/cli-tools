@@ -193,7 +193,7 @@ export const loginPlatformUser = async () => {
       },
     )
     await sdkPool
-      .getSDK(InteractionType.AutoLoginToken)
+      .getSDK(InteractionType.MasqueradeToken)
       .generateToken(autoLoginToken.token)
 
     printTable([{ success: true }])
