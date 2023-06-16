@@ -74,3 +74,8 @@ export const mustGetParam = (url: string, param: string): string => {
 }
 
 export const joinCookies = (cookies: string[]) => cookies.join('; ')
+
+export const encodeClientMasqueradeTokens = (
+  clientToken: string,
+  masqueradeToken: string,
+) => `${clientToken}TOKEN_SPLITTER${masqueradeToken}`
