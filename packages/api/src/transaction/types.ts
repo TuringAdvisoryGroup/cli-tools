@@ -17,6 +17,11 @@ export interface GetTransactionByIdArgs {
   transactionId: string
 }
 
+export interface BatchTransactionResponseData {
+  uuid: string
+  totalTxnCount: number,
+}
+
 export interface TransactionResponseData {
   token: {
     uuid: string

@@ -48,8 +48,11 @@ export const batchSend = async (
       note,
       toUser,
       toUsername,
-      tokenId,
+      tokenID: tokenId
     }));
+    //transactions.map(({ ...transaction, tokenId }) => )
+    //no need to do a map and the response is not an array
+    //{...transaction, tokendID: tokenId}
 
     const response = await client.call<Response<Array<TransactionResponseData>>>({
       url: '/v1/transactions/batch',
