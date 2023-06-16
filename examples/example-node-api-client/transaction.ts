@@ -60,6 +60,7 @@ export const sendFromPlatformUser = async () => {
 
     const tx = await transaction.send(
       clientPool.getClient(InteractionType.AutoLoginToken),
+      
       {
         amount: answers.amount,
         toUsername: answers.toUsername,
