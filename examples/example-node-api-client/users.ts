@@ -251,7 +251,7 @@ export const getPlatformUserTokenBalance = async () => {
       },
     ])
 
-    const response = await user.getPlatformUserBalance(
+    const balance = await user.getPlatformUserBalance(
       clientPool.getClient(InteractionType.ClientCredentials),
       {
         userType: answers.userType,
@@ -260,7 +260,14 @@ export const getPlatformUserTokenBalance = async () => {
       },
     )
 
-    printTable([response])
+    console.log('BALANCE: ', balance)
+    printTable([
+      {
+        tokenId: balance.token.uuid,
+        symbol: balance.token.symbol,
+        balance: balance.amount,
+      },
+    ])
   } catch (err) {
     console.error(err)
   }
@@ -292,6 +299,7 @@ export const getPlatformUserTokenBalances = async () => {
         platformUserId: answers.platformUserId,
       },
     )
+    console.log('balances respinse: ', response)
 
     printTable([response])
   } catch (err) {

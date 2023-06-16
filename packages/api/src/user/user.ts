@@ -100,11 +100,13 @@ export const getPlatformUserBalances = async (
   client: Client,
   { userType, platformUserId }: PlatformUserArgs,
 ) => {
-  const response = await client.call<Response<{ token: string }>>({
+  const response = await client.call<Response<GetUserBalancesResponseData[]>>({
     url: `/v1/platforms/${userType}/users/${platformUserId}/balances`,
     method: 'GET',
     authorization: true,
   })
+
+  console.log('response data ==> ', response)
 
   return response.data
 }
@@ -113,7 +115,7 @@ export const getPlatformUserBalance = async (
   client: Client,
   { userType, platformUserId, tokenId }: PlatformUserTokenBalancesArgs,
 ) => {
-  const response = await client.call<Response<{ token: string }>>({
+  const response = await client.call<Response<GetUserBalancesResponseData>>({
     url: `/v1/platforms/${userType}/users/${platformUserId}/balances/${tokenId}`,
     method: 'GET',
     authorization: true,
