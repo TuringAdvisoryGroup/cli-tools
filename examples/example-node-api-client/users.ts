@@ -2,7 +2,12 @@ import { user } from '@roll-network/api'
 import { printTable } from 'console-table-printer'
 import inquirer from 'inquirer'
 import { ClientPool } from '@roll-network/api-client'
-import { SDKPool, InteractionType, ScopeType } from '@roll-network/auth-sdk'
+import {
+  SDKPool,
+  InteractionType,
+  ScopeType,
+  encodeClientMasqueradeTokens,
+} from '@roll-network/auth-sdk'
 import config from './config.js'
 
 export const getUserBalances = async () => {
@@ -192,9 +197,21 @@ export const loginPlatformUser = async () => {
         userId: answers.userId,
       },
     )
+
+    const clientToken = await sdkPool
+      .getSDK(InteractionType.ClientCredentials)
+      .getToken()
+
+    if (!clientToken) throw new Error('unable to get client token')
+
     await sdkPool
       .getSDK(InteractionType.MasqueradeToken)
-      .generateToken(autoLoginToken.token)
+      .generateToken(
+        encodeClientMasqueradeTokens(
+          clientToken.access_token,
+          autoLoginToken.token,
+        ),
+      )
 
     printTable([{ success: true }])
   } catch (err) {
