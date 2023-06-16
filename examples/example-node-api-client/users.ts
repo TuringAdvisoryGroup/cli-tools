@@ -5,10 +5,10 @@ import { ClientPool } from '@roll-network/api-client'
 import {
   SDKPool,
   InteractionType,
-  ScopeType,
   encodeClientMasqueradeTokens,
+  safelyGetToken,
 } from '@roll-network/auth-sdk'
-import config from './config.js'
+import config, { platformUserConfig } from './config.js'
 
 export const getUserBalances = async () => {
   try {
@@ -140,11 +140,6 @@ export const getUser = async () => {
   }
 }
 
-const platformUserConfig = {
-  ...config,
-  scopes: [...config.scopes, ScopeType.Masquerade, ScopeType.PlatformUser],
-}
-
 export const createPlatformUser = async () => {
   try {
     const sdkPool = new SDKPool(platformUserConfig)
@@ -198,17 +193,15 @@ export const loginPlatformUser = async () => {
       },
     )
 
-    const clientToken = await sdkPool
-      .getSDK(InteractionType.ClientCredentials)
-      .getToken()
-
-    if (!clientToken) throw new Error('unable to get client token')
+    const clientToken = await safelyGetToken(
+      sdkPool.getSDK(InteractionType.ClientCredentials),
+    )
 
     await sdkPool
       .getSDK(InteractionType.MasqueradeToken)
       .generateToken(
         encodeClientMasqueradeTokens(
-          clientToken.access_token,
+          clientToken?.access_token,
           autoLoginToken.token,
         ),
       )

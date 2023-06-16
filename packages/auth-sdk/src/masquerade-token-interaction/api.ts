@@ -12,9 +12,10 @@ export const autoLogin = async (
 ): Promise<string> => {
   const response = await axios.post<RedirectToResponse>(
     `${apiUrl}/v2/oauth2/login?token=${masqueradeToken}&login_challenge=${loginChallenge}`,
+    undefined,
     {
-      withcredentials: true,
-      headers: { Cookie: cookies, Authorization: clientToken },
+      withCredentials: true,
+      headers: { Authorization: `Bearer ${clientToken}`, Cookies: cookies },
     },
   )
 
