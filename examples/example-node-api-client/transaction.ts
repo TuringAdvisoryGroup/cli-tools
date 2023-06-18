@@ -83,45 +83,91 @@ export const sendFromPlatformUser = async () => {
   }
 }
 
-export const batchSendTransactions = async () => {
+export const sendBatchFromPlatformUser = async () => {
   try {
-    const sdkPool = new SDKPool(config);
-    await sdkPool.getSDK(InteractionType.ClientCredentials).generateToken();
-    const clientPool = new ClientPool({ baseUrl: process.env.API_URL }, sdkPool);
+    const sdkPool = new SDKPool(config)
+    await sdkPool.getSDK(InteractionType.ClientCredentials).generateToken()
+    const clientPool = new ClientPool({ baseUrl: process.env.API_URL }, sdkPool)
 
-    const transactions = [
-      {
-        amount: '10',
-        toUsername: 'user1',
-        tokenId: 'token1',
-        note: 'Transaction 1',
-      },
-      {
-        amount: '5',
-        toUsername: 'user2',
-        tokenId: 'token2',
-        note: 'Transaction 2',
-      },
-    ];
+    let batchSendPrompt = true;
 
-    const response = await transaction.batchSend(
-      clientPool.getClient(InteractionType.ClientCredentials),
-      transactions,
-    );
+    while (batchSendPrompt) {
+      const answers = await inquirer.prompt([
+        {
+          type: 'input',
+          name: 'userType',
+          message: 'User Type (discord, telegram)',
+        },
+        {
+          type: 'input',
+          name: 'platformUserId',
+          message: 'User ID from the external platform',
+        },
+        {
+          type: 'input',
+          name: 'toUsername',
+          message: 'Roll Username to send to',
+        },
+        {
+          type: 'input',
+          name: 'tokenId',
+          message: 'Token UUID',
+        },
+        {
+          type: 'input',
+          name: 'amount',
+          message: 'the number of tokens to send',
+        },
+        {
+          type: 'confirm',
+          name: 'batchSendAgain',
+          message: 'Do you want to send another batch?',
+          default: false,
+        },
+      ]);
 
-    console.log('Batch send response:', response);
+      const userResp = await user.createPlatformUser(
+        clientPool.getClient(InteractionType.ClientCredentials),
+        {
+          userType: answers.userType,
+          platformUserId: answers.platformUserId,
+        },
+      );
 
-    if (Array.isArray(response)) {
-      printTable(response.map((tx) => ({
-        from: tx.from.username,
-        to: tx.to.username,
-        token: tx.token.symbol,
-        amount: tx.amount,
-        status: tx.status,
-        type: tx.type,
-      })));
-    } else {
-      console.error('Invalid response:', response);
+      const autoLoginToken = await user.getUserMasqueradeToken(
+        clientPool.getClient(InteractionType.ClientCredentials),
+        {
+          userId: userResp.userID,
+        },
+      );
+
+      await sdkPool
+        .getSDK(InteractionType.AutoLoginToken)
+        .generateToken(autoLoginToken.token);
+
+      const tx = await transaction.send(
+        clientPool.getClient(InteractionType.AutoLoginToken),
+
+        {
+          amount: answers.amount,
+          toUsername: answers.toUsername,
+          tokenId: answers.tokenId,
+          note: 'test transaction',
+        },
+      );
+
+      printTable([
+        {
+          from: tx.from.username,
+          to: tx.to.username,
+          token: tx.token.symbol,
+          amount: tx.amount,
+          status: tx.status,
+          type: tx.type,
+        },
+      ]);
+
+      batchSendPrompt = answers.batchSendAgain;
     }
   } catch (err) {
     console.error(err);

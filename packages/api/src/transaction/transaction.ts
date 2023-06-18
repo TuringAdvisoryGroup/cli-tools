@@ -43,11 +43,8 @@ export const batchSend = async (
   transactions: Array<SendArgs>,
 ) => {
   try {
-    const body = transactions.map(({ amount, note, toUser, toUsername, tokenId }) => ({
-      amount,
-      note,
-      toUser,
-      toUsername,
+    const body = transactions.map(({ tokenId, ...transaction }) => ({
+      ...transaction,
       tokenID: tokenId
     }));
     //transactions.map(({ ...transaction, tokenId }) => )
