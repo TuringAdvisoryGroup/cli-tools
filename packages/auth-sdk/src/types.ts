@@ -68,9 +68,9 @@ export type Token = RequestTokenResponseData & {
 
 export enum InteractionType {
   Code = 'code',
-  AutoLoginToken = 'autologintoken',
+  MasqueradeToken = 'masquerade',
   ClientCredentials = 'clientcredentials',
-  ServerBrowser = 'serverbrowser',
+  Server = 'server',
 }
 
 export interface TokenInteraction<T> {

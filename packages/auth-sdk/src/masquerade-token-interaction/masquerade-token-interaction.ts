@@ -15,7 +15,7 @@ import {
   joinCookies,
 } from './utils'
 
-class AutoLoginTokenInteraction
+class MasqueradeTokenInteraction
   extends CodeTokenInteraction
   implements TokenInteraction<string>
 {
@@ -28,11 +28,17 @@ class AutoLoginTokenInteraction
     this.config = config
   }
 
-  public generateToken = async (autoLoginToken: string) => {
+  public generateToken = async (encodedToken: string) => {
     const loginUrl = await this.getLogInUrl()
     const codeVerifier = await this.storage.getItem(StorageKey.CodeVerifier)
 
     let cookies: string[] = []
+
+    const [clientToken, masqueradeToken] = encodedToken.split('TOKEN_SPLITTER')
+
+    if (!clientToken || !masqueradeToken) {
+      throw new Error('Invalid token')
+    }
 
     const loginRedirectResponse = await haltRedirect(loginUrl)
 
@@ -42,7 +48,8 @@ class AutoLoginTokenInteraction
 
     const autoLoginUrl = await autoLogin(
       this.config.apiUrl ?? '',
-      autoLoginToken,
+      clientToken,
+      masqueradeToken,
       loginChallenge,
       joinCookies(cookies),
     )
@@ -86,4 +93,4 @@ class AutoLoginTokenInteraction
   }
 }
 
-export default AutoLoginTokenInteraction
+export default MasqueradeTokenInteraction

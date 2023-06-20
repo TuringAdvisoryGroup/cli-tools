@@ -1,5 +1,7 @@
 import 'dotenv/config'
 import inquirer from 'inquirer'
+// @ts-ignore
+import inquirerSearchList from 'inquirer-search-list'
 import { getTokenCreator, getTokenList } from './tokens.js'
 import {
   getUser,
@@ -19,6 +21,14 @@ import {
   getClients,
 } from './client-credentials.js'
 
+import {
+  generateClientCredentialsToken,
+  refreshClientCredentialsToken,
+} from './client-credentials-token.js'
+
+inquirer.registerPrompt('search-list', inquirerSearchList)
+
+
 enum Choice {
   GetTokenList = 'Get token list',
   GetTokenCreator = 'Get token creator',
@@ -36,6 +46,8 @@ enum Choice {
   GetPlatformUserBalances = 'Get platform user balances',
   GetClients = 'Get clients',
   GenerateClientSecret = 'Generate client secret',
+  GenerateClientCredentialsToken = 'Generate client credentials token',
+  RefreshClientCredentialsToken = 'Refresh client credentials token',
 }
 
 const actionByChoice: Record<Choice, Function> = {
@@ -55,13 +67,15 @@ const actionByChoice: Record<Choice, Function> = {
   [Choice.GetPlatformUserBalance]: getPlatformUserTokenBalance,
   [Choice.GetClients]: getClients,
   [Choice.GenerateClientSecret]: generateClientSecret,
+  [Choice.GenerateClientCredentialsToken]: generateClientCredentialsToken,
+  [Choice.RefreshClientCredentialsToken]: refreshClientCredentialsToken,
 }
 
 async function main() {
   inquirer
     .prompt([
       {
-        type: 'list',
+        type: 'search-list',
         name: 'option',
         message: 'What do you want to do?',
         choices: Object.values(Choice),

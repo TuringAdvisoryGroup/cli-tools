@@ -1,5 +1,5 @@
-import AutoLoginTokenInteraction from './auto-login-token-interaction'
-import ServerBrowserTokenInteraction from './server-browser-token-interaction'
+import MasqueradeTokenInteraction from './masquerade-token-interaction'
+import ServerTokenInteraction from './server-token-interaction'
 import ClientCredentialsTokenInteraction from './client-credentials-token-interaction'
 import CodeTokenInteraction from './code-token-interaction'
 import SDK from './sdk'
@@ -30,17 +30,17 @@ class SDKPool {
   private makeStorages = (storage: Storage) => {
     return {
       [InteractionType.Code]: addPrefixToStorage(storage, InteractionType.Code),
-      [InteractionType.AutoLoginToken]: addPrefixToStorage(
+      [InteractionType.MasqueradeToken]: addPrefixToStorage(
         storage,
-        InteractionType.AutoLoginToken,
+        InteractionType.MasqueradeToken,
       ),
       [InteractionType.ClientCredentials]: addPrefixToStorage(
         storage,
         InteractionType.ClientCredentials,
       ),
-      [InteractionType.ServerBrowser]: addPrefixToStorage(
+      [InteractionType.Server]: addPrefixToStorage(
         storage,
-        InteractionType.ServerBrowser,
+        InteractionType.Server,
       ),
     }
   }
@@ -51,18 +51,18 @@ class SDKPool {
         this.config,
         storages[InteractionType.Code],
       ),
-      [InteractionType.AutoLoginToken]: new AutoLoginTokenInteraction(
+      [InteractionType.MasqueradeToken]: new MasqueradeTokenInteraction(
         this.config,
-        storages[InteractionType.AutoLoginToken],
+        storages[InteractionType.MasqueradeToken],
       ),
       [InteractionType.ClientCredentials]:
         new ClientCredentialsTokenInteraction(
           this.config,
           storages[InteractionType.ClientCredentials],
         ),
-      [InteractionType.ServerBrowser]: new ServerBrowserTokenInteraction(
+      [InteractionType.Server]: new ServerTokenInteraction(
         this.config,
-        storages[InteractionType.ServerBrowser],
+        storages[InteractionType.Server],
       ),
     }
   }
@@ -77,20 +77,20 @@ class SDKPool {
         storages[InteractionType.Code],
         interactions[InteractionType.Code],
       ),
-      [InteractionType.AutoLoginToken]: new SDK(
+      [InteractionType.MasqueradeToken]: new SDK(
         this.config,
-        storages[InteractionType.AutoLoginToken],
-        interactions[InteractionType.AutoLoginToken],
+        storages[InteractionType.MasqueradeToken],
+        interactions[InteractionType.MasqueradeToken],
       ),
       [InteractionType.ClientCredentials]: new SDK(
         this.config,
         storages[InteractionType.ClientCredentials],
         interactions[InteractionType.ClientCredentials],
       ),
-      [InteractionType.ServerBrowser]: new SDK(
+      [InteractionType.Server]: new SDK(
         this.config,
-        storages[InteractionType.ServerBrowser],
-        interactions[InteractionType.ServerBrowser],
+        storages[InteractionType.Server],
+        interactions[InteractionType.Server],
       ),
     }
   }
