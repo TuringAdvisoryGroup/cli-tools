@@ -98,7 +98,7 @@ export const sendFromPlatformUser = async () => {
 
 export const sendBatchFromPlatformUser = async () => {
   try {
-    const sdkPool = new SDKPool(config)
+    const sdkPool = new SDKPool(platformUserConfig)
     await sdkPool.getSDK(InteractionType.ClientCredentials).generateToken()
     const clientPool = new ClientPool({ baseUrl: process.env.API_URL }, sdkPool)
 
@@ -155,11 +155,11 @@ export const sendBatchFromPlatformUser = async () => {
       );
 
       await sdkPool
-        .getSDK(InteractionType.AutoLoginToken)
+        .getSDK(InteractionType.MasqueradeToken)
         .generateToken(autoLoginToken.token);
 
       const tx = await transaction.send(
-        clientPool.getClient(InteractionType.AutoLoginToken),
+        clientPool.getClient(InteractionType.MasqueradeToken),
 
         {
           amount: answers.amount,

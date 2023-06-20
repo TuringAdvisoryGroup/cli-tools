@@ -139,12 +139,6 @@ export const getUser = async () => {
     console.error(error)
   }
 }
-
-const platformUserConfig = {
-  ...config,
-  scopes: [...config.scopes, ScopeType.Masquerade, ScopeType.PlatformUser],
-}
-
 export const createPlatformUser = async () => {
   try {
     const sdkPool = new SDKPool(platformUserConfig)
