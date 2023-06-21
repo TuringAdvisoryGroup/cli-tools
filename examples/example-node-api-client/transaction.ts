@@ -102,7 +102,7 @@ export const sendBatchFromPlatformUser = async () => {
     await sdkPool.getSDK(InteractionType.ClientCredentials).generateToken()
     const clientPool = new ClientPool({ baseUrl: process.env.API_URL }, sdkPool)
 
-    let batchSendPrompt = true;
+    let batchSendPrompt = true
 
     while (batchSendPrompt) {
       const answers = await inquirer.prompt([
@@ -137,7 +137,7 @@ export const sendBatchFromPlatformUser = async () => {
           message: 'Do you want to send another batch?',
           default: false,
         },
-      ]);
+      ])
 
       const userResp = await user.createPlatformUser(
         clientPool.getClient(InteractionType.ClientCredentials),
@@ -145,7 +145,7 @@ export const sendBatchFromPlatformUser = async () => {
           userType: answers.userType,
           platformUserId: answers.platformUserId,
         },
-      );
+      )
 
       const masqueradeToken = await user.getUserMasqueradeToken(
         clientPool.getClient(InteractionType.ClientCredentials),
@@ -153,19 +153,19 @@ export const sendBatchFromPlatformUser = async () => {
           userId: userResp.userID,
         },
       )
-  
+
       const clientToken = await safelyGetToken(
         sdkPool.getSDK(InteractionType.ClientCredentials),
       )
 
       await sdkPool
-      .getSDK(InteractionType.MasqueradeToken)
-      .generateToken(
-        encodeClientMasqueradeTokens(
-          clientToken.access_token,
-          masqueradeToken.token,
-        ),
-      )
+        .getSDK(InteractionType.MasqueradeToken)
+        .generateToken(
+          encodeClientMasqueradeTokens(
+            clientToken.access_token,
+            masqueradeToken.token,
+          ),
+        )
 
       const tx = await transaction.send(
         clientPool.getClient(InteractionType.MasqueradeToken),
@@ -176,7 +176,7 @@ export const sendBatchFromPlatformUser = async () => {
           tokenId: answers.tokenId,
           note: 'test transaction',
         },
-      );
+      )
 
       printTable([
         {
@@ -187,11 +187,11 @@ export const sendBatchFromPlatformUser = async () => {
           status: tx.status,
           type: tx.type,
         },
-      ]);
+      ])
 
-      batchSendPrompt = answers.batchSendAgain;
+      batchSendPrompt = answers.batchSendAgain
     }
   } catch (err) {
-    console.error(err);
+    console.error(err)
   }
-};
+}

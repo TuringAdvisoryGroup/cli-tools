@@ -14,7 +14,10 @@ import {
   getPlatformUserTokenBalance,
   getPlatformUserTokenBalances,
 } from './users.js'
-import { sendFromPlatformUser } from './transaction.js'
+import {
+  sendBatchFromPlatformUser,
+  sendFromPlatformUser,
+} from './transaction.js'
 import {
   generateClientSecret,
   getClient,
@@ -61,7 +64,7 @@ const actionByChoice: Record<Choice, Function> = {
   [Choice.LoginPlatformUser]: loginPlatformUser,
   [Choice.GetClient]: getClient,
   [Choice.SendFromPlatformUser]: sendFromPlatformUser,
-  [Choice.SendBatchFromPlatformUser]: sendFromPlatformUser,
+  [Choice.SendBatchFromPlatformUser]: sendBatchFromPlatformUser,
   [Choice.GetPlatformUserDepositAddress]: getPlatformUserDepositAddress,
   [Choice.GetPlatformUserBalances]: getPlatformUserTokenBalances,
   [Choice.GetPlatformUserBalance]: getPlatformUserTokenBalance,

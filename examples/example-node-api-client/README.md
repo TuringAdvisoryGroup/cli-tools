@@ -93,4 +93,3 @@ If you encounter an "Unauthorized 403" error while performing an operation, foll
 3. After signing in, the new `CLIENT_SECRET` will be displayed in your terminal.
 
 4. Replace the `CLIENT_SECRET`
-
