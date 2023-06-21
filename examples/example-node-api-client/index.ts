@@ -14,7 +14,10 @@ import {
   getPlatformUserTokenBalance,
   getPlatformUserTokenBalances,
 } from './users.js'
-import { sendFromPlatformUser } from './transaction.js'
+import {
+  sendBatchFromPlatformUser,
+  sendFromPlatformUser,
+} from './transaction.js'
 import {
   generateClientSecret,
   getClient,
@@ -38,6 +41,7 @@ enum Choice {
   LoginPlatformUser = 'Login platform user',
   GetClient = 'Get client',
   SendFromPlatformUser = 'Send From Platform User',
+  SendBatchFromPlatformUser = 'Send Batch From Platform User',
   GetPlatformUserDepositAddress = 'Get platform user deposit address',
   GetPlatformUserBalance = 'Get platform user balance',
   GetPlatformUserBalances = 'Get platform user balances',
@@ -58,6 +62,7 @@ const actionByChoice: Record<Choice, Function> = {
   [Choice.LoginPlatformUser]: loginPlatformUser,
   [Choice.GetClient]: getClient,
   [Choice.SendFromPlatformUser]: sendFromPlatformUser,
+  [Choice.SendBatchFromPlatformUser]: sendBatchFromPlatformUser,
   [Choice.GetPlatformUserDepositAddress]: getPlatformUserDepositAddress,
   [Choice.GetPlatformUserBalances]: getPlatformUserTokenBalances,
   [Choice.GetPlatformUserBalance]: getPlatformUserTokenBalance,
