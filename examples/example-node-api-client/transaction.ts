@@ -147,16 +147,25 @@ export const sendBatchFromPlatformUser = async () => {
         },
       );
 
-      const autoLoginToken = await user.getUserMasqueradeToken(
+      const masqueradeToken = await user.getUserMasqueradeToken(
         clientPool.getClient(InteractionType.ClientCredentials),
         {
           userId: userResp.userID,
         },
-      );
+      )
+  
+      const clientToken = await safelyGetToken(
+        sdkPool.getSDK(InteractionType.ClientCredentials),
+      )
 
       await sdkPool
-        .getSDK(InteractionType.MasqueradeToken)
-        .generateToken(autoLoginToken.token);
+      .getSDK(InteractionType.MasqueradeToken)
+      .generateToken(
+        encodeClientMasqueradeTokens(
+          clientToken.access_token,
+          masqueradeToken.token,
+        ),
+      )
 
       const tx = await transaction.send(
         clientPool.getClient(InteractionType.MasqueradeToken),
