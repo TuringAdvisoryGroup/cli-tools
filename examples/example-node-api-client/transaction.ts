@@ -2,7 +2,7 @@ import { user, transaction } from '@roll-network/api'
 import { printTable } from 'console-table-printer'
 import inquirer from 'inquirer'
 import { ClientPool } from '@roll-network/api-client'
-import { SDKPool, InteractionType } from '@roll-network/auth-sdk'
+import { SDKPool, InteractionType, InMemoryStore } from '@roll-network/auth-sdk'
 import { platformUserConfig } from './config.js'
 
 export const sendFromPlatformUser = async () => {
@@ -92,11 +92,11 @@ export const sendFromPlatformUser = async () => {
 
 export const sendBatchFromPlatformUser = async () => {
   try {
-    const sdkPool = new SDKPool(platformUserConfig)
-    await sdkPool.getSDK(InteractionType.ClientCredentials).generateToken()
-    const clientPool = new ClientPool({ baseUrl: process.env.API_URL }, sdkPool)
+    const sdkPool = new SDKPool(platformUserConfig);
+    await sdkPool.getSDK(InteractionType.ClientCredentials).generateToken();
+    const clientPool = new ClientPool({ baseUrl: process.env.API_URL }, sdkPool);
 
-    let batchSendPrompt = true
+    let batchSendPrompt = true;
 
     while (batchSendPrompt) {
       const answers = await inquirer.prompt([
@@ -131,7 +131,7 @@ export const sendBatchFromPlatformUser = async () => {
           message: 'Do you want to send another batch?',
           default: false,
         },
-      ])
+      ]);
 
       const userResp = await user.createPlatformUser(
         clientPool.getClient(InteractionType.ClientCredentials).call,
@@ -139,51 +139,55 @@ export const sendBatchFromPlatformUser = async () => {
           userType: answers.userType,
           platformUserId: answers.platformUserId,
         },
-      )
+      );
 
       const masqueradeToken = await user.getUserMasqueradeToken(
         clientPool.getClient(InteractionType.ClientCredentials).call,
         {
           userId: userResp.userID,
         },
-      )
+      );
+
       const clientToken = await sdkPool
         .getSDK(InteractionType.ClientCredentials)
-        .getToken()
+        .getToken();
       if (!clientToken) {
-        throw new Error('Client token is undefined.')
+        throw new Error('Client token is undefined.');
       }
 
       await sdkPool.getSDK(InteractionType.MasqueradeToken).generateToken({
         clientToken: clientToken.access_token,
         masqueradeToken: masqueradeToken.token,
-      })
+      });
 
-      const tx = await transaction.send(
+      const transactions = [{
+        amount: answers.amount,
+        toUsername: answers.toUsername,
+        tokenId: answers.tokenId,
+        note: 'test transaction',
+      }];
+
+      const txs = await transaction.batchSend(
         clientPool.getClient(InteractionType.MasqueradeToken).call,
+        transactions,
+      );
 
-        {
-          amount: answers.amount,
-          toUsername: answers.toUsername,
-          tokenId: answers.tokenId,
-          note: 'test transaction',
-        },
-      )
+      txs.forEach((tx) => {
+        printTable([
+          {
+            from: tx.from.username,
+            to: tx.to.username,
+            token: tx.token.symbol,
+            amount: tx.amount,
+            status: tx.status,
+            type: tx.type,
+          },
+        ]);
+      });
 
-      printTable([
-        {
-          from: tx.from.username,
-          to: tx.to.username,
-          token: tx.token.symbol,
-          amount: tx.amount,
-          status: tx.status,
-          type: tx.type,
-        },
-      ])
-
-      batchSendPrompt = answers.batchSendAgain
+      batchSendPrompt = answers.batchSendAgain;
     }
   } catch (err) {
-    console.error(err)
+    console.error(err);
   }
-}
+};
