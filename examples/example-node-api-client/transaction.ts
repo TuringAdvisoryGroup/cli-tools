@@ -92,24 +92,29 @@ export const sendFromPlatformUser = async () => {
 
 export const sendBatchFromPlatformUser = async () => {
   try {
-    const sdkPool = new SDKPool(platformUserConfig);
-    await sdkPool.getSDK(InteractionType.ClientCredentials).generateToken();
-    const clientPool = new ClientPool({ baseUrl: process.env.API_URL }, sdkPool);
+    const sdkPool = new SDKPool(platformUserConfig)
+    await sdkPool.getSDK(InteractionType.ClientCredentials).generateToken()
+    const clientPool = new ClientPool({ baseUrl: process.env.API_URL }, sdkPool)
 
-    let batchSendPrompt = true;
+    let batchSendPrompt = true
+
+    const transactions = []
+
+    const senderAnswers = await inquirer.prompt([
+      {
+        type: 'input',
+        name: 'userType',
+        message: 'User Type (discord, telegram)',
+      },
+      {
+        type: 'input',
+        name: 'platformUserId',
+        message: 'User ID from the external platform',
+      },
+    ])
 
     while (batchSendPrompt) {
       const answers = await inquirer.prompt([
-        {
-          type: 'input',
-          name: 'userType',
-          message: 'User Type (discord, telegram)',
-        },
-        {
-          type: 'input',
-          name: 'platformUserId',
-          message: 'User ID from the external platform',
-        },
         {
           type: 'input',
           name: 'toUsername',
@@ -131,63 +136,61 @@ export const sendBatchFromPlatformUser = async () => {
           message: 'Do you want to send another batch?',
           default: false,
         },
-      ]);
-
-      const userResp = await user.createPlatformUser(
-        clientPool.getClient(InteractionType.ClientCredentials).call,
+      ])
+      transactions.push(
         {
-          userType: answers.userType,
-          platformUserId: answers.platformUserId,
+          amount: answers.amount,
+          toUsername: answers.toUsername,
+          tokenId: answers.tokenId,
+          note: 'test transaction',
         },
-      );
+      )
 
-      const masqueradeToken = await user.getUserMasqueradeToken(
-        clientPool.getClient(InteractionType.ClientCredentials).call,
-        {
-          userId: userResp.userID,
-        },
-      );
-
-      const clientToken = await sdkPool
-        .getSDK(InteractionType.ClientCredentials)
-        .getToken();
-      if (!clientToken) {
-        throw new Error('Client token is undefined.');
-      }
-
-      await sdkPool.getSDK(InteractionType.MasqueradeToken).generateToken({
-        clientToken: clientToken.access_token,
-        masqueradeToken: masqueradeToken.token,
-      });
-
-      const transactions = [{
-        amount: answers.amount,
-        toUsername: answers.toUsername,
-        tokenId: answers.tokenId,
-        note: 'test transaction',
-      }];
-
-      const txs = await transaction.batchSend(
-        clientPool.getClient(InteractionType.MasqueradeToken).call,
-        transactions,
-      );
-
-      txs.forEach((tx) => {
-        printTable([
-          {
-            from: tx.from.username,
-            to: tx.to.username,
-            token: tx.token.symbol,
-            amount: tx.amount,
-            status: tx.status,
-            type: tx.type,
-          },
-        ]);
-      });
-
-      batchSendPrompt = answers.batchSendAgain;
+      batchSendPrompt = answers.batchSendAgain
     }
+    const userResp = await user.createPlatformUser(
+      clientPool.getClient(InteractionType.ClientCredentials).call,
+      {
+        userType: senderAnswers.userType,
+        platformUserId: senderAnswers.platformUserId,
+      },
+    )
+
+    const masqueradeToken = await user.getUserMasqueradeToken(
+      clientPool.getClient(InteractionType.ClientCredentials).call,
+      {
+        userId: userResp.userID,
+      },
+    )
+
+    const clientToken = await sdkPool
+      .getSDK(InteractionType.ClientCredentials)
+      .getToken()
+    if (!clientToken) {
+      throw new Error('Client token is undefined.')
+    }
+
+    await sdkPool.getSDK(InteractionType.MasqueradeToken).generateToken({
+      clientToken: clientToken.access_token,
+      masqueradeToken: masqueradeToken.token,
+    })
+    const txs = await transaction.batchSend(
+      clientPool.getClient(InteractionType.MasqueradeToken).call,
+      transactions,
+    )
+
+    printTable(
+      txs.map((tx) => ({
+        from: tx.from.username,
+        to: tx.to.username,
+        token: tx.token.symbol,
+        amount: tx.amount,
+        status: tx.status,
+        type: tx.type,
+      })),
+    )
+
   } catch (err) {
-    console.error(err);
+    console.error(err)
   }
-};
+}
