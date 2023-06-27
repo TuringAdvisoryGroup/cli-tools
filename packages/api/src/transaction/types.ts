@@ -11,6 +11,7 @@ export interface SendArgs {
   amount: string
   note?: string
   message?: string
+  
 }
 
 export interface GetTransactionByIdArgs {
