@@ -81,6 +81,7 @@ import WalletAdd from '../../assets/icons/wallet-add.svg'
 import WalletMoney from '../../assets/icons/wallet-money.svg'
 import Wallet from '../../assets/icons/wallet.svg'
 import Warning from '../../assets/icons/warning.svg'
+import { Spinner } from '../spinner'
 
 export type IconVariant = keyof typeof icons
 export interface IconProps extends SvgProps {
@@ -136,6 +137,7 @@ const icons = {
   lock: Lock,
   logout: Logout,
   logo: RollLogo,
+  loading: Spinner,
   menu: Menu,
   minus: Minus,
   money: Money,
